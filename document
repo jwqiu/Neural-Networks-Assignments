@@ -1,0 +1,209 @@
+Part 1: Perceptron [10 marks]
+
+Imagine you work with a fisheries department that wants to automate the classification of fish species
+based on physical traits. They want to manage fish population of salmon in the sea, so they first raise
+fish in fresh water and later release them into the sea. They measure ring diameter of fish in fresh
+water and the subsequent ring diameter when fish is in the sea. They want to use this data to develop
+a classification model to identify each type of fish in the sea using these two ring diameter
+measurements. By training a Perceptron model, you aim to automate the process of determining
+whether a fish is of Canadian or Alaskan origin. This can be useful for stock management, as well as
+environmental impact studies, and trade categorization.
+Download Fish_data.csv file from LEARN page. The dataset consists of 3 columns. The first two columns
+are inputs (ring diameter of scales of fish grown in sea water and fresh water, respectively). The third
+column is the output which states whether the category of the fish is Canadian or Alaskan (the value
+is 0 for Canadian and 1 for Alaskan).
+Perceptron model classifies fish into Canadian or Alaskan depending on these two measures of ring
+diameter of scales.
+
+i. Write python code to create a perceptron model using Perceptron class to use the whole
+dataset in Fish_data.csv to classify fish into Canadian or Alaskan depending on the two input
+measures of ring diameter of scales. Use 100 epochs for an accurate model and print the
+accuracy of the model (test with the whole dataset). Normalize the input features before
+training to ensure faster convergence and to prevent features with larger numeric ranges from
+dominating the learning process.
+
+ii.  Modify your python code to show the final classification boundary on the data in a 2D plot.
+Use scatter plots to plot the two types of data points in two colors.
+
+iii. Write the equation of this boundary line.
+
+iv. Compare the plot with the classification boundary shown in lecture (and in the textbook (S.
+Samarasinghe)).
+
+
+
+
+Part 2: Single Linear Neuron [20 marks]
+
+Imagine that you are helping a housing company specialising in energy efficiency which wants to
+understand how much heat enters a house based on its orientation to the north and south directions.
+Since energy input from the sun into a house varies based on the direction of exposure, this company
+wants to build a simple linear neuron model that estimates heat influx based on the north and south
+orientation data. This basic linear model will help them determine how much influence the angle of
+house to north and south directions have on heat gain.
+Download heat_influx_north_south.csv file from LEARN page. Use this dataset to develop a single
+linear neuron model. This is the dataset that we learned about in the lecture and the textbook (S.
+Samarasinghe) where a linear neuron model had been trained to predict heat influx into a house from
+the north and south orientations of the house.
+
+i. Write a python program to train a single linear neuron model using all data to predict heat
+influx from north orientation and south orientation (value in ‘North’ & ‘South’ columns are
+the inputs for the single neuron where output is the value in ‘HeatFlux’ column) using all data.
+Note that the accuracy of the models can be increased by normalising the dataset into the
+range (0,1) since the data (inputs and outputs) have very different ranges. Train the model
+with 100 epochs and Stochastic Gradient Descent (SGD) optimization algorithm and test the
+model with the whole dataset. Find the mean square error (MSE) and R2 score for the trained
+neuron model.
+
+ii. Repeat the experiment with 150, 200, 250, 300 epochs and record the mean square error
+(MSE) and R2 score for each trial in the table given below. Make sure you use the same initial
+weights for the network for better comparison.
+
+![alt text](image.png)
+
+iii. Choose the best model and extract the weights of the model.
+
+iv. Write the equation for the single linear neuron function (linear equation showing input-output
+relationship）
+
+v. Modify the program to plot the data and the network function on the same plot. (3D plot of
+predicted heat influx as a function plotted against north and south orientations).
+
+vi. Pot the network predicted heat influx values and target heat influx values against the two
+inputs (3D data plot).
+
+
+
+
+Part 3: Single Non-Linear Neuron for Classification [20 marks]
+
+Now the fisheries department wants a more flexible model than the Perceptron — one that can
+better handle overlap or complex boundaries between Canadian and Alaskan fish. Here, you use a
+non-linear neuron, which incorporates nonlinearity between inputs and output in its processing and
+therefore offer better classification accuracy in real-world conditions where data patterns aren’t
+strictly linear.
+
+    i. Write a python program to use Fish_data.csv and train a non-linear neuron on the whole data
+    set (normalised) to classify fish into Canadian or Alaskan depending on the two input measures
+    of ring diameter of scales. Choose a sigmoid activation function for the neuron for
+    classification. Start with 100 epochs and Stochastic Gradient Descent (SGD) optimization
+    algorithm and repeat the trial with 200, 300, 500, 1000 epochs and record the precision, recall
+    and F1-score for each class of fish and the overall accuracy of the model in the Table given
+    below. Make sure you use the same initial weights for the network for better comparison.
+
+    ![alt text](image-1.png)
+
+    ii. Choose the best model and extract the weights of the model.
+
+    iii. Write the equation for the single non-linear neuron according to the sigmoid activation
+    function.
+
+    iv. Modify your python code to show the final classification boundary on the data.
+
+    v. Compare the classification boundary of the best model with the classification boundary you
+    had in Part 1 above.
+
+
+
+
+
+Part 4: Single Non-Linear Neuron for Prediction [20 marks]
+
+The housing company discussed in Part 2 above is now interested in improving the prediction of total
+heat influx based on north and south orientations of a building. A simple linear model might not
+capture the complex interaction between these inputs (e.g., north brings diffused light, south brings
+direct sunlight). A non-linear model can learn these interactions better and offer a more accurate
+prediction tool for designing homes that maximize passive solar heating.
+
+    i. Write a python program to train a non-linear neuron on the whole data set to predict heat
+    influx from north and south orientations (using the two inputs from the two columns ‘South’
+    and ‘North’). Choose sigmoid activation function for the neuron. Train the model with 200
+    epochs and Stochastic Gradient Descent (SGD) optimization algorithm with learning rate 0.5.
+
+    ii. Modify your program to find the Mean Square Error (MSE) and R2 score of the model.
+
+    iii. Repeat the experiment with 400, 600, 800 and 1000 epochs and record the MSE and R2
+    Values in the Table below.
+
+    ![alt text](image-2.png)
+
+    iv. Choose the best model and extract the weights of the model and write the equation for the
+    network function (relating output to inputs and weights) This is the function of sigmoid when
+    there are two inputs.
+    v. Plot the network function on the data 3D plot of heat influx prediction function plotted
+    against north and south orientations for the sigmoid function. (3D function and data together
+    in one plot)
+    vi. Plot the network predicted heat influx values and target heat influx values against the two
+    inputs (3D data plot).
+
+
+
+
+
+Part 5: Shallow Networks [30 marks]
+
+Suppose the architectural company in part 4 above has contacted you with another set of data and
+asked you to expand the model to predict the amount of heat a house gets depending on the level of
+its insulation and its orientation to East, South and North directions. This model will help them in
+their architectural practice to design the warmest possible homes for their clients.
+Download the ‘Heat_Influx_insulation_east_south_north.csv’ file from LEARN.
+You are supposed to train and optimise a feedforward network to predict heat influx into a home
+using these four inputs. Develop the best 3-layer network (input, hidden and output) by testing
+different number of neurons in the hidden layer using Gradient Descent optimisation algorithm to
+predict heat influx with the least error and highest accuracy.
+
+In order to get the best outcome, you need to
+
+    1. explore the data,
+    2. train few networks and
+    3. assess results and report the best model.
+
+Use the following steps to help in this process:
+
+a)
+    i. Write a python code to read the csv file and separate the dataset to input and output.
+    Insulation and East, South and North orientations are inputs for the model. HeatFlux is the
+    output of the model because the model predicts the heat influx into the house when the
+    insulation level and the orientations to the East, South and North directions of the model are
+    given as inputs. Normalise the dataset using min-max scaling to scale data from 0 to 1.
+
+    ii. Modify the code to observe data to show how the target relates to inputs and which inputs
+    are more influencing the output than the others. This way you can qualitatively see how
+    insulation and East, South and North orientations influence heat influx into a home. The
+    simplest way to do this is to plot target and each of the inputs in the same plot (as multiple
+    subplots). In addition, you may use parallel coordinates plots. We covered these in lab 3.
+
+    iii. Show results and comment on the relationship of inputs to the target as you observe them
+    from the plots. Which inputs may be more influential on the target (positively or negatively)?
+    (Note: strong positive and strong negative influences are both important influences)
+    
+    iv. Modify your python program written above to split the dataset into three parts for training,
+    testing and validation of the model in 6:2:2 ratio.
+
+    v. Also modify the program to develop a 3-layer network to predict heat influx. You have 4 inputs
+    and one output. Train your network for 1000 epochs and use the learning rate 0.5 for the SGD
+    optimiser.
+    The optimisation algorithm to be used is Stochastic Gradient Descent (SGD). Start with 1
+    hidden layer with one neuron which uses Sigmoid function. Use linear activation function for
+    the output neuron. (This combination is typical for prediction problems). Compute the MSE
+    and R2 for training, validation and test sets and whole dataset (all data).
+
+    vi. Repeat the trial with 2, 3, 4, and 5 neurons in the hidden layer and report the results in the
+    Table below. Make sure you use the same initial weights for the network for better
+    comparison.
+    ![alt text](image-3.png)
+
+    vii. Compare results from different trials. A good model will do well across all four datasets.
+    Observe if this is the case for your models. From the models that have done well across all
+    datasets, use the MSE and R2 on test data to select the best network for this problem if it has
+    also produced the best or very good results for the whole dataset.
+
+    viii. Plot the target and the predicted values for the best model.
+
+b) Repeat 5a (v to vii) using ReLU. Try the model with 1, 5, 10, and 20 neurons in the hidden layer and
+record the results in the table below.
+
+![alt text](image-4.png)
+
+c.) Compare the results from Parts 2, 4 and 5 (a and b). Which model would you recommend? Justify
+your answer.
