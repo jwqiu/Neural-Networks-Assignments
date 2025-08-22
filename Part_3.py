@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 
+# load data from a csv file and extract features and labels
 def load_data(path:str):
     df=pd.read_csv(path)
     X_df = df.iloc[:, :2].apply(pd.to_numeric, errors="coerce")
@@ -14,18 +15,14 @@ def load_data(path:str):
     y = y_df.to_numpy()
     return X, y
 
-
-# 1) 加载并归一化
 X, y = load_data("Fish_data.csv")
 X = MinMaxScaler().fit_transform(X)
 
-# 2) 多组 epoch 迭代次数
-EPOCH_LIST = [100, 200, 300, 500, 1000]
 
+# start model training with different epochs and print the performance report
+EPOCH_LIST = [100, 200, 300, 500, 1000]
 results = []
 models = {}
-
-# 3) 循环训练并评估
 for epochs in EPOCH_LIST:
     print(f"\n===== Training with {epochs} epochs =====")
     clf = LogisticRegression(solver="saga", max_iter=epochs, random_state=42)
@@ -38,27 +35,22 @@ for epochs in EPOCH_LIST:
     print(classification_report(y, y_pred))
 
 
-# 4) 找出准确率最高的模型
+# identify the best model based on accuracy
 best_epochs, best_acc = max(results, key=lambda x: x[1])
 best_model = models[best_epochs]
-
 print(f"\nBest model: {best_epochs} epochs, accuracy = {best_acc:.4f}")
 
-# 5) 提取权重和偏置
+# extract weights and bias from the best model
 weights = best_model.coef_[0]
 bias = best_model.intercept_[0]
-
 print("Weights:", weights)
 print("Bias:", bias)
-
 w1 = 3.5431793
 w2 = -2.86608717
 b = -0.4326884556738937
 
-# 画出散点图
+# plot the original data points and the decision boundary
 plt.scatter(X[:, 0], X[:, 1], c=y, cmap="Paired", edgecolors="k")
-
-# 决策边界：解 w1*x1 + w2*x2 + b = 0
 x1_vals = np.linspace(min(X[:,0]), max(X[:,0]), 100)
 x2_vals = -(w1*x1_vals + b) / w2   # x2 对应的直线
 
