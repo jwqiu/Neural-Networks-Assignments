@@ -62,7 +62,9 @@ def main():
     plt.plot(x_vals, y_vals, "k--", label="Decision boundary")
     m = -A[0] / A[1]
     q = -c / A[1]
-    print(f"Decision boundary in original space: y = {m:.4f} * x + {q:.4f}")
+    # print(f"Decision boundary in original space: y = {m:.4f} * x + {q:.4f}")
+    print(f"Decision boundary (general form): {A[0]:.4f}*x1 + {A[1]:.4f}*x2 + {c:.4f} = 0")
+
 
 
     plt.legend()

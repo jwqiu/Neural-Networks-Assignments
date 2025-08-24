@@ -130,9 +130,11 @@ prediction tool for designing homes that maximize passive solar heating.
     iv. Choose the best model and extract the weights of the model and write the equation for the
     network function (relating output to inputs and weights) This is the function of sigmoid when
     there are two inputs.
+
     v. Plot the network function on the data 3D plot of heat influx prediction function plotted
     against north and south orientations for the sigmoid function. (3D function and data together
     in one plot)
+    
     vi. Plot the network predicted heat influx values and target heat influx values against the two
     inputs (3D data plot).
 

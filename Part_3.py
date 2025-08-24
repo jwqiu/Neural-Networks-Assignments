@@ -50,13 +50,14 @@ w2 = -2.86608717
 b = -0.4326884556738937
 
 # plot the original data points and the decision boundary
-plt.scatter(X[:, 0], X[:, 1], c=y, cmap="Paired", edgecolors="k")
+plt.scatter(X[y==0, 0], X[y==0, 1], c="blue")
+plt.scatter(X[y==1, 0], X[y==1, 1], c="red")
 x1_vals = np.linspace(min(X[:,0]), max(X[:,0]), 100)
 x2_vals = -(w1*x1_vals + b) / w2   # x2 对应的直线
 
-plt.plot(x1_vals, x2_vals, "r-", label="Decision Boundary")
-plt.xlabel("x1")
-plt.ylabel("x2")
+plt.plot(x1_vals, x2_vals, "k--", label="Decision boundary")  # 黑色虚线
+plt.xlabel("RingDiam_fresh_water")
+plt.ylabel("RingDiam_salt_water")
 plt.legend()
 plt.show()
 
