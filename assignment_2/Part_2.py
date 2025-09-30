@@ -14,7 +14,6 @@ from sklearn.metrics import confusion_matrix
 import shap
 
 
-
 random.seed(20)
 np.random.seed(20)
 tf.random.set_seed(20)
@@ -121,7 +120,7 @@ for lr in trials:
     evaluate_model(model, X_all, y_all, "All Data")
     print("-"*50)
 
-# the best model is the one with learning rate 0.1
+# the best model is the one with learning rate 0.01
 
 optimizers=[ "adadelta", "adagrad", "adamax"]
 
@@ -136,7 +135,7 @@ for opt in optimizers:
         evaluate_model(model, X_all, y_all, "All Data")
         print("-"*50)
 
-# the best model so far is still the one with optimizer adam and learning rate 0.1
+# the best model so far is still the one with optimizer adam and learning rate 0.01
 
 # select features with correlation > 0.4 or < -0.4
 selected_features = target_corr[abs(target_corr["target"]) > 0.4].index.tolist()
@@ -149,7 +148,7 @@ X_train_reduced, X_temp_reduced, y_train_reduced, y_temp_reduced = train_test_sp
 X_val_reduced, X_test_reduced, y_val_reduced, y_test_reduced = train_test_split(X_temp_reduced, y_temp_reduced, test_size=0.5, random_state=20)
 
 # train and evaluate the best model so far on the reduced dataset
-model=build_model(optimizer_name="adam", learning_rate=0.1, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
+model=build_model(optimizer_name="adam", learning_rate=0.01, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
 evaluate_model(model, X_train_reduced, y_train_reduced, "Training")
 evaluate_model(model, X_val_reduced, y_val_reduced, "Validation")
 evaluate_model(model, X_test_reduced, y_test_reduced, "Test")
@@ -161,7 +160,7 @@ print("-"*50)
 # experiment with different number of hidden layers
 hidden_layers_trials=[2,3,4,5,6]
 for hl in hidden_layers_trials:
-    model=build_model(optimizer_name="adam", learning_rate=0.1, num_hidden_layers=hl, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
+    model=build_model(optimizer_name="adam", learning_rate=0.01, num_hidden_layers=hl, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
     evaluate_model(model, X_train_reduced, y_train_reduced, "Training")
     evaluate_model(model, X_val_reduced, y_val_reduced, "Validation")
     evaluate_model(model, X_test_reduced, y_test_reduced, "Test")
@@ -171,20 +170,20 @@ for hl in hidden_layers_trials:
     print("-"*50)
 
 # the best model is the one with 2 hidden layers, display its confusion matrix on the test set
-model=build_model(optimizer_name="adam", learning_rate=0.1, num_hidden_layers=2, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
+model=build_model(optimizer_name="adam", learning_rate=0.01, num_hidden_layers=2, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
 y_pred = (model.predict(X_test_reduced) > 0.5).astype("int")
 print(confusion_matrix(y_test_reduced, y_pred))
 
-best_model_all_inputs=build_model(optimizer_name="adam", learning_rate=0.1, num_hidden_layers=2, X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val)
-best_model_reduced_inputs=build_model(optimizer_name="adam", learning_rate=0.1, num_hidden_layers=2, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
+best_model_all_inputs=build_model(optimizer_name="adam", learning_rate=0.01, num_hidden_layers=2, X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val)
+best_model_reduced_inputs=build_model(optimizer_name="adam", learning_rate=0.01, num_hidden_layers=2, X_train=X_train_reduced, y_train=y_train_reduced, X_val=X_val_reduced, y_val=y_val_reduced)
 
+# define a function to run SHAP analysis
 def run_shap_analysis(model, X, dataset_name="Test"):
     X = X.astype(float)
 
     print(f"Running SHAP analysis on {dataset_name} dataset...")
     background = shap.sample(X, 50)
 
-    # ★ 最小改动：包装 predict，返回一维正类概率
     def pred_fn(data):
         p = np.asarray(model.predict(data, verbose=0))
         return p[:, 1] if (p.ndim == 2 and p.shape[1] > 1) else p.ravel()
@@ -192,16 +191,22 @@ def run_shap_analysis(model, X, dataset_name="Test"):
     explainer = shap.KernelExplainer(pred_fn, background)
     shap_values = explainer.shap_values(X, nsamples=100)
 
-    # ★ 保底：若返回 list，取正类
     if isinstance(shap_values, list):
         shap_values = shap_values[1]
 
     shap.summary_plot(shap_values, X, plot_type="dot", show=False)
-    plt.title(f"SHAP Summary (dot) - {dataset_name}")
-    plt.show()
+    fig = plt.gcf()
+    fig.set_size_inches(8, 6)                 
+    fig.subplots_adjust(top=0.88)            
+    plt.title(f"SHAP Summary (dot) - {dataset_name}", pad=10)  
+    plt.tight_layout()                        
 
     shap.summary_plot(shap_values, X, plot_type="bar", show=False)
-    plt.title(f"SHAP Summary (bar) - {dataset_name}")
+    fig = plt.gcf()
+    fig.set_size_inches(8, 6)
+    fig.subplots_adjust(top=0.88)
+    plt.title(f"SHAP Summary (bar) - {dataset_name}", pad=10)
+    plt.tight_layout()
     plt.show()
 
 

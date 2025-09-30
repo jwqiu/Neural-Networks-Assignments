@@ -55,7 +55,6 @@ def build_model(activation_fn):
     
     tf.random.set_seed(40)
 
-    # build the model
     model = keras.Sequential([
         layers.Input(shape=(14,)),
         layers.Dense(10, activation=activation_fn),
@@ -63,13 +62,11 @@ def build_model(activation_fn):
         layers.Dense(1, activation="linear")
     ], name=f"model_{activation_fn}")
 
-    # compile the model
     model.compile(
         optimizer=keras.optimizers.SGD(),  
         loss="mse",
     )
 
-    # set up model checkpointing to save the best model during training
     checkpoint = ModelCheckpoint(
         f"best_model_{activation_fn}.keras",
         monitor="val_loss",
@@ -80,7 +77,6 @@ def build_model(activation_fn):
 
     print(f"Training {activation_fn} model...")
 
-    # start training
     history = model.fit(
         X_train, y_train,
         epochs=200,
@@ -91,7 +87,6 @@ def build_model(activation_fn):
     
     print(f"Training of {activation_fn} model completed.")
 
-    # load the best model and return
     best_model = load_model(f"best_model_{activation_fn}.keras")
 
     return best_model 
@@ -123,14 +118,13 @@ for activation in ["relu", "sigmoid", "tanh", "softmax"]:
     evaluate_model(best_model, X_all, y_all, "Whole dataset")
     print("-" * 50)
 
-
+# build a new function to try different optimizers and learning rates(just don't want to modify too much of the above code)
 def build_model_with_different_optimizers(optimizer, activation_fn="sigmoid",trial_name="trial",X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val):
 
     tf.random.set_seed(40)
 
     input_dim = X_train.shape[1]  
 
-    # build the model
     model = keras.Sequential([
             layers.Input(shape=(input_dim,)),
             layers.Dense(10, activation=activation_fn),
@@ -138,13 +132,11 @@ def build_model_with_different_optimizers(optimizer, activation_fn="sigmoid",tri
             layers.Dense(1, activation="linear")
         ], name=f"model_{trial_name}")
     
-    # compile the model
     model.compile(
         optimizer=optimizer,  
         loss="mse",
     )
     
-    # set up model checkpointing to save the best model during training
     checkpoint = ModelCheckpoint(
         f"best_model_{trial_name}.keras",
         monitor="val_loss",
@@ -153,7 +145,6 @@ def build_model_with_different_optimizers(optimizer, activation_fn="sigmoid",tri
         verbose=0
     )
 
-    # start training
     print(f"Training {trial_name} model with optimizer {optimizer}...")
     history = model.fit(
         X_train, y_train,
@@ -242,8 +233,6 @@ def build_model_with_different_layers(num_hidden_layers,trial_name="trial",X_tra
 
     input_dim = X_train.shape[1]  
 
-    # build the model
-
     model = keras.Sequential(name=f"model_{trial_name}")
     model.add(layers.Input(shape=(input_dim,)))
 
@@ -251,13 +240,11 @@ def build_model_with_different_layers(num_hidden_layers,trial_name="trial",X_tra
         model.add(layers.Dense(10,activation="sigmoid"))
     model.add(layers.Dense(1, activation="linear"))
 
-    # compile the model
     model.compile(
         optimizer=keras.optimizers.SGD(learning_rate=0.1, momentum=0.5),  
         loss="mse",
     )
     
-    # set up model checkpointing to save the best model during training
     checkpoint = ModelCheckpoint(
         f"best_model_{trial_name}.keras",
         monitor="val_loss",
@@ -266,7 +253,6 @@ def build_model_with_different_layers(num_hidden_layers,trial_name="trial",X_tra
         verbose=0
     )
 
-    # start training
     print(f"Training {trial_name} model with {num_hidden_layers} hidden layers...")
     history = model.fit(
         X_train, y_train,
